@@ -1,5 +1,5 @@
 {
-  "name": "youtube.com",
+  "name": "youtube.com-extended",
   "version": "1.1.0",
   "description": "Youtube crop, snapshots and GIFs",
   "main": "script.js",
@@ -14,7 +14,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Javascipt/node-youtube.git"
+    "url": "git+https://github.com/edgarmarkosov/node-youtube.git"
   },
   "scripts": {
     "test": "mocha ./test/tests.js"
@@ -22,6 +22,7 @@
   "keywords": [
     "Youtube",
     "capture",
+    "extended",
     "snapshot",
     "screenshot",
     "crop",
@@ -31,10 +32,10 @@
     "animated",
     "download"
   ],
-  "author": "Khalid REHIOUI <Array.prototype@gmail.com> (http://github.com/javascipt)",
+  "author": "Edgar Markosov <edgar.markosov@gmail.com> (https://github.com/edgarmarkosov)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Javascipt/node-youtube/issues"
+    "url": "https://github.com/edgarmarkosov/node-youtube/issues"
   },
-  "homepage": "https://github.com/Javascipt/node-youtube#readme"
+  "homepage": "https://github.com/edgarmarkosov/node-youtube#readme"
 }
