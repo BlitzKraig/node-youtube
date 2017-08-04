@@ -32,7 +32,7 @@ This package is the son of these two amazing parents:
 Instantiate the `youtube` object :
 
 ```javascript
-    var Youtube = require('youtube.com');
+    var Youtube = require('youtube.com-extended');
     
     // You can instantiate the youtube object using the video url
     var youtube = Youtube('http://www.youtube.com/watch?v=ategZqxHkz4');
