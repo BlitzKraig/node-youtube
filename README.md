@@ -24,7 +24,7 @@ This package is the son of these two amazing parents:
 ## Installation :
 
 ```bash
-  $ npm install youtube.com
+  $ npm install youtube.com-extended
 ```
 
 ## How does it work ?
