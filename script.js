@@ -83,22 +83,22 @@ module.exports = function (urlOrVidId) {
 
             return deferred.promise;
         },
-        gif : function (startTime, endTime, filePath, size, fps) {
+        gif : function (startTime, endTime, filePath, size, ratio, fps) {
             var sec             = require('sec');
-            var gif             = require('./modules/gif.js')
+            var gif             = require('./modules/gif.js');
             var deferred        = Q.defer();
             var cropFilePath    = path.resolve(__dirname, 'tmp', 'crop-'+ ( + new Date() ) + '.mp4');
             var duration        = sec(endTime) - sec(startTime);
             this.crop(startTime, endTime, cropFilePath)
                 .then(function () {
-                    gif(cropFilePath, filePath, '00', duration, size, fps, function (err) {
+                    gif(cropFilePath, filePath, '00', duration, size, ratio, fps, function (err) {
                         fs.unlink(cropFilePath);
                         if(err) return deferred.reject(err);
                         deferred.resolve();
                     })
                 }).catch(function(err) {
                     deferred.reject(err)
-                })
+                });
 
             return deferred.promise;
         },

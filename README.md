@@ -1,6 +1,7 @@
 Youtube to snapshots and GIFs.
 ================================================================
 
+This module was forked from [node-youtube](https://github.com/Javascipt/node-youtube). It is an extended version of it, providing more ffmpeg features.
 ![youtube.com](https://api.travis-ci.org/Javascipt/node-youtube.svg)
 
 Have you ever dreamt of creating a gif out of a youtube video ? Then you are in the right place
@@ -77,11 +78,12 @@ The `.snapshot()` method also takes the format as its 3rd argument.
             console.log("err : ", err)
         });
 ```
-The `.gif()` method takes 2 more arguments, which are `size` and `fps`
+The `.gif()` method takes 2 more arguments, which are `size`, `ratio` and `fps`
 - size : The hight and width of the final gif ex : `"600x300"`
-- fps : an integer representing the fps of the final gif
+- ratio : The aspect argument may either be a number or a X:Y string. For example, '4:3' or 1.33333
+- fps : An integer representing the fps of the final gif
 
-You can find more details on these 2 arguments on the [Fluent-ffmpeg package](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg).
+You can find more details on these 3 arguments on the [Fluent-ffmpeg package](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg).
 
 #### Downloading a video
 
