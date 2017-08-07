@@ -42,7 +42,7 @@ Instantiate the `youtube` object :
     var youtube = Youtube('ategZqxHkz4');
 ```
 
-####Crop a youtube video :
+#### Crop a youtube video :
 
 ```javascript
     youtube.crop('0:05', '0:25', './file.mp4')
@@ -56,7 +56,7 @@ Instantiate the `youtube` object :
 The `.crop()` method takes a 4th argument which is the format of the video to download example : `['--format=18']`
 This format is exactly the same we specify when downloading a youtube video using the [Youtube-dl package](https://github.com/fent/node-youtube-dl). Make sure to take a look at it for more info.
 
-####Take a screenshot :
+#### Take a screenshot :
 
 ```javascript
     youtube.snapshot('1:00', './file.jpg')
@@ -69,7 +69,7 @@ This format is exactly the same we specify when downloading a youtube video usin
 
 The `.snapshot()` method also takes the format as its 3rd argument.
 
-####Creating a GIF :
+#### Creating a GIF :
 
 ```javascript
     youtube.gif('0:05', '0:35', './file.gif')
