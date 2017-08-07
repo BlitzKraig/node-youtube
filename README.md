@@ -1,7 +1,8 @@
 Youtube to snapshots and GIFs.
 ================================================================
 
-This module was forked from [node-youtube](https://github.com/Javascipt/node-youtube). It is an extended version of it, providing more ffmpeg features.
+This module was forked from [node-youtube](https://github.com/Javascipt/node-youtube).
+It is an extended version of it, providing more ffmpeg features and creating gifs from local paths.
 ![youtube.com](https://api.travis-ci.org/Javascipt/node-youtube.svg)
 
 Have you ever dreamt of creating a gif out of a youtube video ? Then you are in the right place
@@ -78,6 +79,21 @@ The `.snapshot()` method also takes the format as its 3rd argument.
             console.log("err : ", err)
         });
 ```
+
+#### Creating a GIF from local path video file
+
+```javascript
+    var Youtube = require('youtube.com-extended');
+    var youtube = Youtube(); // do NOT provide any argument here
+
+    youtube.gif('0:05', '0:35', '/tmp/existing_video.mp4', './file.gif')
+            .then(function () {
+                console.log("Done");
+            }).catch(function (err) {
+                console.log("err : ", err)
+            });
+```
+
 The `.gif()` method takes 2 more arguments, which are `size`, `ratio` and `fps`
 - size : The hight and width of the final gif ex : `"600x300"`
 - ratio : The aspect argument may either be a number or a X:Y string. For example, '4:3' or 1.33333

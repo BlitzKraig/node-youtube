@@ -1,6 +1,6 @@
 var ffmpeg      = require('fluent-ffmpeg');
 var move        = require('./move');
-var path        = require('path')
+var path        = require('path');
 
 module.exports = function (startTime, duration, videoFilePath, cropFilePath, filePath, cb) {
     function cropCallBack () {
@@ -14,4 +14,4 @@ module.exports = function (startTime, duration, videoFilePath, cropFilePath, fil
         .on('error', cropCallBack)
         .on('end', cropCallBack)
         .run();
-}
+};
