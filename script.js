@@ -19,7 +19,10 @@ module.exports = function (urlOrVidId) {
                 var deferred            = Q.defer();
                 var checkSnap           = function () {
                     snapShot(videoFilePath, time, snapshotFilePath, filePath, function (err) {
-                        if(err) return setTimeout(checkSnap, 200);
+                        if(err) {
+                            return setTimeout(checkSnap, 200);
+                        }
+
                         ws.emit('close');
                         fs.unlink(snapshotFilePath);
                         fs.unlink(videoFilePath);
@@ -33,7 +36,11 @@ module.exports = function (urlOrVidId) {
                     snapShot(videoFilePath, time, snapshotFilePath, filePath, function (err) {
                         fs.unlink(snapshotFilePath);
                         fs.unlink(videoFilePath);
-                        if(err) return deferred.reject(err);
+
+                        if(err) {
+                            return deferred.reject(err);
+                        }
+
                         deferred.resolve();
                     })
                 });
@@ -57,13 +64,20 @@ module.exports = function (urlOrVidId) {
                         return deferred.reject(new Error('The end time needs to be greather than start time'));
                     } else {
                         snapShot(videoFilePath, endTime, tmpSnap, null, function (err) {
-                            if(err) return setTimeout(checkCrop, 200);
+                            if(err) {
+                                return setTimeout(checkCrop, 200);
+                            }
+
                             ws.emit('close');
                             crop(startTime, duration, videoFilePath, cropFilePath, filePath, function (err) {
                                 fs.unlink(videoFilePath);
                                 fs.unlink(cropFilePath);
                                 fs.unlink(tmpSnap);
-                                if(err) return deferred.reject(err);
+
+                                if(err) {
+                                    return deferred.reject(err);
+                                }
+
                                 deferred.resolve();
                             })
                         })
@@ -77,14 +91,18 @@ module.exports = function (urlOrVidId) {
                         fs.unlink(videoFilePath);
                         fs.unlink(cropFilePath);
                         fs.unlink(tmpSnap);
-                        if(err) return deferred.reject(err);
+
+                        if(err) {
+                            return deferred.reject(err);
+                        }
+
                         deferred.resolve();
                     })
                 });
 
                 return deferred.promise;
             },
-            gif : function (startTime, endTime, filePath, size, ratio, fps) {
+            gif : function (startTime, endTime, filePath, options) {
                 var sec             = require('sec');
                 var gif             = require('./modules/gif.js');
                 var deferred        = Q.defer();
@@ -92,9 +110,13 @@ module.exports = function (urlOrVidId) {
                 var duration        = sec(endTime) - sec(startTime);
                 this.crop(startTime, endTime, cropFilePath)
                     .then(function () {
-                        gif(cropFilePath, filePath, '00', duration, size, ratio, fps, function (err) {
+                        gif(cropFilePath, filePath, '00', duration, options, function (err) {
                             fs.unlink(cropFilePath);
-                            if(err) return deferred.reject(err);
+
+                            if(err) {
+                                return deferred.reject(err);
+                            }
+
                             deferred.resolve();
                         })
                     })
@@ -116,10 +138,11 @@ module.exports = function (urlOrVidId) {
                         .then(function () {
                             fs.unlink(videoFilePath);
                             deferred.resolve();
-                        }).catch(function () {
-                        fs.unlink(videoFilePath);
-                        deferred.reject();
-                    })
+                        })
+                        .catch(function () {
+                            fs.unlink(videoFilePath);
+                            deferred.reject();
+                        })
                 });
 
                 return deferred.promise;
@@ -148,7 +171,7 @@ module.exports = function (urlOrVidId) {
 
             return deferred.promise;
         },
-        gif : function (startTime, endTime, videoFilePath, filePath, size, ratio, fps) {
+        gif : function (startTime, endTime, videoFilePath, filePath, options) {
             var sec             = require('sec');
             var gif             = require('./modules/gif.js');
             var deferred        = Q.defer();
@@ -157,7 +180,7 @@ module.exports = function (urlOrVidId) {
 
             this.crop(startTime, endTime, videoFilePath, cropFilePath)
                 .then(function () {
-                    gif(cropFilePath, filePath, '00', duration, size, ratio, fps, function (err) {
+                    gif(cropFilePath, filePath, '00', duration, options, function (err) {
                         fs.unlink(cropFilePath);
 
                         if(err) {

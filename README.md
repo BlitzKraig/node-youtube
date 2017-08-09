@@ -20,12 +20,12 @@ This package is the son of these two amazing parents:
 
 ### Dependencies:
 
-> You need to get [ffmpeg](https://ffmpeg.org/) installed to start using this package.
+> You need to get [ffmpeg and ffprobe](https://ffmpeg.org/) installed to start using this package.
 
 ## Installation :
 
 ```bash
-  $ npm install youtube.com-extended
+  $ npm install youtube.com-extended --save
 ```
 
 ## How does it work ?
@@ -94,12 +94,36 @@ The `.snapshot()` method also takes the format as its 3rd argument.
             });
 ```
 
-The `.gif()` method takes 2 more arguments, which are `size`, `ratio` and `fps`
-- size : The hight and width of the final gif ex : `"600x300"`
-- ratio : The aspect argument may either be a number or a X:Y string. For example, '4:3' or 1.33333
-- fps : An integer representing the fps of the final gif
+The `.gif()` method takes 1 more argument, which is `options` object.
+- `options.size` : The hight and width of the final gif ex : `"600x300"`
+- `options.ratio` : The aspect argument may either be a number or a X:Y string. For example, '4:3' or 1.33333
+- `options.fps` : An integer representing the fps of the final gif
+- `options.maxWidth` : An integer representing the max width of final gif, `ffprobe` used here to get original video width and choose minimum value, ignored when `options.size` provided
+- `options.maxHeight` : An integer representing the fps of the final gif, `ffprobe` used here to get original video width and choose minimum value, ignored when `options.size` provided
 
-You can find more details on these 3 arguments on the [Fluent-ffmpeg package](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg).
+You can find more details on `size`, `ratio`, `fps` arguments on the [Fluent-ffmpeg package](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg).
+
+#### Creating a GIF with different options
+
+```javascript
+    youtube.gif('0:05', '0:35', './file.gif', {size: '800:?', fps: 8})
+            .then(function () {
+                // gif width is 800, height computed automatically, fps is 8
+                console.log("Done");
+            }).catch(function (err) {
+                console.log("err : ", err)
+            });
+
+    youtube.gif('0:05', '0:35', './file.gif', {maxWidth: 800})
+                .then(function () {
+                    // gif max width is 800, height computed automatically
+                    // for example, if original video width is 720, then result width is 720
+                    // for example, if original video width is 1280, then result width is 800
+                    console.log("Done");
+                }).catch(function (err) {
+                    console.log("err : ", err)
+                });
+```
 
 #### Downloading a video
 
