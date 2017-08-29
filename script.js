@@ -34,6 +34,11 @@ module.exports = function (urlOrVidId) {
 
                 video.pipe(ws);
                 video.on('info', checkSnap);
+                video.on('error', function(err) {
+                    fs.unlink(snapshotFilePath, function() {});
+                    fs.unlink(videoFilePath, function() {});
+                    deferred.reject(err);
+                });
                 video.on('end', function() {
                     ended = true;
 
@@ -93,6 +98,12 @@ module.exports = function (urlOrVidId) {
 
                 video.pipe(ws);
                 video.on('info', checkCrop);
+                video.on('error', function(err) {
+                    fs.unlink(videoFilePath, function() {});
+                    fs.unlink(cropFilePath, function() {});
+                    fs.unlink(tmpSnap, function() {});
+                    deferred.reject(err);
+                });
                 video.on('end', function() {
                     ended = true;
 
@@ -142,6 +153,10 @@ module.exports = function (urlOrVidId) {
                 var move            = require('./modules/move');
                 var deferred        = Q.defer();
                 video.pipe(ws);
+                video.on('error', function(err) {
+                    fs.unlink(videoFilePath, function() {});
+                    deferred.reject(err);
+                });
                 video.on('end', function() {
                     move(videoFilePath, filePath)
                         .then(function () {
