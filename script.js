@@ -24,8 +24,8 @@ module.exports = function (urlOrVidId) {
                         }
 
                         ws.emit('close');
-                        fs.unlink(snapshotFilePath);
-                        fs.unlink(videoFilePath);
+                        fs.unlink(snapshotFilePath, function() {});
+                        fs.unlink(videoFilePath, function() {});
                         deferred.resolve();
                     })
                 };
@@ -34,8 +34,8 @@ module.exports = function (urlOrVidId) {
                 video.on('info', checkSnap);
                 video.on('end', function() {
                     snapShot(videoFilePath, time, snapshotFilePath, filePath, function (err) {
-                        fs.unlink(snapshotFilePath);
-                        fs.unlink(videoFilePath);
+                        fs.unlink(snapshotFilePath, function() {});
+                        fs.unlink(videoFilePath, function() {});
 
                         if(err) {
                             return deferred.reject(err);
@@ -70,9 +70,9 @@ module.exports = function (urlOrVidId) {
 
                             ws.emit('close');
                             crop(startTime, duration, videoFilePath, cropFilePath, filePath, function (err) {
-                                fs.unlink(videoFilePath);
-                                fs.unlink(cropFilePath);
-                                fs.unlink(tmpSnap);
+                                fs.unlink(videoFilePath, function() {});
+                                fs.unlink(cropFilePath, function() {});
+                                fs.unlink(tmpSnap, function() {});
 
                                 if(err) {
                                     return deferred.reject(err);
@@ -88,9 +88,9 @@ module.exports = function (urlOrVidId) {
                 video.on('info', checkCrop);
                 video.on('end', function() {
                     crop(startTime, duration, videoFilePath, cropFilePath, filePath, function (err) {
-                        fs.unlink(videoFilePath);
-                        fs.unlink(cropFilePath);
-                        fs.unlink(tmpSnap);
+                        fs.unlink(videoFilePath, function() {});
+                        fs.unlink(cropFilePath, function() {});
+                        fs.unlink(tmpSnap, function() {});
 
                         if(err) {
                             return deferred.reject(err);
@@ -111,7 +111,7 @@ module.exports = function (urlOrVidId) {
                 this.crop(startTime, endTime, cropFilePath)
                     .then(function () {
                         gif(cropFilePath, filePath, '00', duration, options, function (err) {
-                            fs.unlink(cropFilePath);
+                            fs.unlink(cropFilePath, function() {});
 
                             if(err) {
                                 return deferred.reject(err);
@@ -136,11 +136,11 @@ module.exports = function (urlOrVidId) {
                 video.on('end', function() {
                     move(videoFilePath, filePath)
                         .then(function () {
-                            fs.unlink(videoFilePath);
+                            fs.unlink(videoFilePath, function() {});
                             deferred.resolve();
                         })
                         .catch(function () {
-                            fs.unlink(videoFilePath);
+                            fs.unlink(videoFilePath, function() {});
                             deferred.reject();
                         })
                 });
@@ -159,8 +159,8 @@ module.exports = function (urlOrVidId) {
             var duration        = sec(endTime) - sec(startTime);
 
             crop(startTime, duration, videoFilePath, cropFilePath, filePath, function (err) {
-                fs.unlink(videoFilePath);
-                fs.unlink(cropFilePath);
+                fs.unlink(videoFilePath, function() {});
+                fs.unlink(cropFilePath, function() {});
 
                 if(err) {
                     return deferred.reject(err);
@@ -181,7 +181,7 @@ module.exports = function (urlOrVidId) {
             this.crop(startTime, endTime, videoFilePath, cropFilePath)
                 .then(function () {
                     gif(cropFilePath, filePath, '00', duration, options, function (err) {
-                        fs.unlink(cropFilePath);
+                        fs.unlink(cropFilePath, function() {});
 
                         if(err) {
                             return deferred.reject(err);
