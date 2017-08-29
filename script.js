@@ -17,10 +17,12 @@ module.exports = function (urlOrVidId) {
                 var videoFilePath       = path.resolve(__dirname, 'tmp', 'video-'+ ( + new Date() ) + '.mp4');
                 var ws                  = fs.createWriteStream(videoFilePath);
                 var deferred            = Q.defer();
+                var ended = false;
+
                 var checkSnap           = function () {
                     snapShot(videoFilePath, time, snapshotFilePath, filePath, function (err) {
                         if(err) {
-                            return setTimeout(checkSnap, 200);
+                            return !ended && setTimeout(checkSnap, 200);
                         }
 
                         ws.emit('close');
@@ -33,6 +35,8 @@ module.exports = function (urlOrVidId) {
                 video.pipe(ws);
                 video.on('info', checkSnap);
                 video.on('end', function() {
+                    ended = true;
+
                     snapShot(videoFilePath, time, snapshotFilePath, filePath, function (err) {
                         fs.unlink(snapshotFilePath, function() {});
                         fs.unlink(videoFilePath, function() {});
@@ -58,14 +62,17 @@ module.exports = function (urlOrVidId) {
                 var ws              = fs.createWriteStream(videoFilePath);
                 var deferred        = Q.defer();
                 var duration        = sec(endTime) - sec(startTime);
+                var ended = false;
+
                 var checkCrop       = function () {
                     if(duration < 1) {
                         ws.emit('close');
                         return deferred.reject(new Error('The end time needs to be greather than start time'));
-                    } else {
+                    }
+                    else {
                         snapShot(videoFilePath, endTime, tmpSnap, null, function (err) {
                             if(err) {
-                                return setTimeout(checkCrop, 200);
+                                return !ended && setTimeout(checkCrop, 200);
                             }
 
                             ws.emit('close');
@@ -87,6 +94,8 @@ module.exports = function (urlOrVidId) {
                 video.pipe(ws);
                 video.on('info', checkCrop);
                 video.on('end', function() {
+                    ended = true;
+
                     crop(startTime, duration, videoFilePath, cropFilePath, filePath, function (err) {
                         fs.unlink(videoFilePath, function() {});
                         fs.unlink(cropFilePath, function() {});
